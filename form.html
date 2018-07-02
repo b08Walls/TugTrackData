@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html ng-app= "formulario">
+<title>TuggerTracker Data</title>
+<link rel="stylesheet" href="angular-material.min.css">
+<!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css"> -->
+<link rel="stylesheet" href="fonts.css">
+<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic"> -->
+<link rel="stylesheet" type="text/css" href="md-time-picker.css">
+<script src="Chart.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script> -->
+<body>
+
+  
+  <md-card ng-controller = "formController" ng-cloak>
+    <!-- <span class="md-display-1" layout-align = "center center">Tiempos Tugger</span> -->
+
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Tugger Tracker Data Center</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-divider></md-divider>
+
+    <md-tabs md-dynamic-height md-border-bottom ng-cloak md-selected = "tabIndex">
+      <!-- ********************************************************************************************************************** -->
+      <!-- *** GRAFICAS DE TIEMPOS PROMEDIO ************************************************************************************* -->
+      <!-- ********************************************************************************************************************** -->
+      <md-tab label="Tiempos Promedio">
+
+        <!-------------------------------------------------------------------------------------------------------------------------->
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Tiempos s Promedio</span>
+            <!-- <md-datepicker md-placeholder = "Fecha inicial" md-open-on-focus></md-datepicker> -->
+          </md-card-title-text>
+        </md-card-title>
+        <!-------------------------------------------------------------------------------------------------------------------------->
+
+        <md-card-content>
+          <!------------------------------------------------------------------------------------------------------------------------>
+          <md-divider></md-divider>
+
+          <md-card-content layout = "row">
+
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Fecha y hora inicial</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <div layout = "column">
+                <md-datepicker md-placeholder = "Fecha inicial" ng-model="demo" md-open-on-focus></md-datepicker>
+                <md-time-picker flex ng-model = "time.twelve" message = "message"> </md-time-picker>
+              </div>
+            </md-card>
+            
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Fecha y hora final</span>
+                </md-card-title-text>
+              </md-card-title>
+              
+              <div layout = "column">
+                <md-datepicker md-placeholder = "Fecha final" ng-model="demo" md-open-on-focus></md-datepicker>
+                <md-time-picker flex ng-model = "time.twelve" message = "message"> </md-time-picker>
+              </div>
+
+            </md-card>
+
+          </md-card-content>
+
+          <md-divider></md-divider>
+          <div layout-gt-md = "row" layout-md = "column">
+            <!---------------------------------------------------------------------------------------------------------------------->
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Tiempos por ruta</span>
+                  <span class="md-subhead">Ruta 1</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <md-card-content>
+                <span class = "md-subhead">Tiempos Promedio por ruta: </span>
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+                </canvas>
+              </md-card-content>
+
+              <md-card-actions layout="row" layout-align="end center"></md-card-actions>
+            </md-card>
+            <!---------------------------------------------------------------------------------------------------------------------->
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Tiempos por ruta</span>
+                  <span class="md-subhead">Ruta 1</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <md-card-content>
+                <span class = "md-subhead">Tiempos Promedio por ruta: </span>
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+                  <md-button type="button" ng-click = "nextTab()">Siguiente</md-button>
+                </canvas>
+              </md-card-content>
+
+              <md-card-actions layout="row" layout-align="end center"></md-card-actions>
+            </md-card>
+            <!---------------------------------------------------------------------------------------------------------------------->
+            <!-- TERMINA EL DIV DEL LAYOUT -->
+          </div>
+        </md-card-content>
+      </md-tab>
+
+      <!-- ********************************************************************************************************************** -->
+      <!-- *** GRAFICAS DE TIEMPOS PROMEDIO ************************************************************************************* -->
+      <!-- ********************************************************************************************************************** -->
+
+      <md-tab label="Tiempos inusuales">
+
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Tiempos Promedio</span>
+          </md-card-title-text>
+        </md-card-title>
+
+        <md-card-content>
+          <md-divider></md-divider>
+          <div layout-gt-md = "row" layout-md = "column">
+
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Tiempos por ruta</span>
+                  <span class="md-subhead">Ruta 1</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <md-card-content>
+                <span class = "md-subhead">Tiempos Promedio por ruta: </span>
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+                </canvas>
+              </md-card-content>
+
+              <md-card-actions layout="row" layout-align="end center"></md-card-actions>
+            </md-card>
+
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Tiempos por ruta</span>
+                  <span class="md-subhead">Ruta 1</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <md-card-content>
+                <span class = "md-subhead">Tiempos Promedio por ruta: </span>
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+                  <md-button type="button" ng-click = "nextTab()">Siguiente</md-button>
+                </canvas>
+              </md-card-content>
+
+              <md-card-actions layout="row" layout-align="end center"></md-card-actions>
+
+            </md-card>
+            <!-- TERMINA EL DIV DEL LAYOUT -->
+          </div>
+        </md-card-content>    
+      </md-tab>
+
+      <!-- ********************************************************************************************************************** -->
+      <!-- *** GRAFICAS POR RUTA ************************************************************************************************ -->
+      <!-- ********************************************************************************************************************** -->
+
+
+      <md-tab ng-repeat = "x in records" label="{{x}}">
+
+        <!-------------------------------------------------------------------------------------------------------------------------->
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Tiempos Promedio</span>
+          </md-card-title-text>
+        </md-card-title>
+        <!-------------------------------------------------------------------------------------------------------------------------->
+
+        <md-card-content>
+          <!------------------------------------------------------------------------------------------------------------------------>
+          <md-divider></md-divider>
+          <div layout-gt-md = "row" layout-md = "column">
+            <!---------------------------------------------------------------------------------------------------------------------->
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Tiempos por ruta</span>
+                  <span class="md-subhead">Ruta 1</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <md-card-content>
+                <span class = "md-subhead">Tiempos Promedio por ruta: </span>
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+                </canvas>
+              </md-card-content>
+
+              <md-card-actions layout="row" layout-align="end center"></md-card-actions>
+            </md-card>
+            <!---------------------------------------------------------------------------------------------------------------------->
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Tiempos por ruta</span>
+                  <span class="md-subhead">Ruta 1</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <md-card-content>
+                <span class = "md-subhead">Tiempos Promedio por ruta: </span>
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+                  <md-button type="button" ng-click = "nextTab()">Siguiente</md-button>
+                </canvas>
+              </md-card-content>
+
+              <md-card-actions layout="row" layout-align="end center"></md-card-actions>
+            </md-card>
+            <!---------------------------------------------------------------------------------------------------------------------->
+            <!-- TERMINA EL DIV DEL LAYOUT -->
+          </div>
+        </md-card-content>
+      </md-tab>
+
+      <!-- ********************************************************************************************************************** -->
+      <!-- *** GRAFICAS DE TIEMPOS PROMEDIO ************************************************************************************* -->
+      <!-- ********************************************************************************************************************** -->
+
+      <md-tab label ="Información sobre sensores">
+
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Tiempos Promedio</span>
+          </md-card-title-text>
+        </md-card-title>
+
+        <md-card-content>
+          <md-divider></md-divider>
+          <div layout-gt-md = "row" layout-md = "column">
+
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Tiempos por ruta</span>
+                  <span class="md-subhead">Ruta 1</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <md-card-content>
+                <span class = "md-subhead">Tiempos Promedio por ruta: </span>
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+                </canvas>
+              </md-card-content>
+
+              <md-card-actions layout="row" layout-align="end center"></md-card-actions>
+            </md-card>
+
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Tiempos por ruta</span>
+                  <span class="md-subhead">Ruta 1</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <md-card-content>
+                <span class = "md-subhead">Tiempos Promedio por ruta: </span>
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+                  <md-button type="button" ng-click = "nextTab()">Siguiente</md-button>
+                </canvas>
+              </md-card-content>
+
+              <md-card-actions layout="row" layout-align="end center"></md-card-actions>
+
+            </md-card>
+            <!-- TERMINA EL DIV DEL LAYOUT -->
+          </div>
+        </md-card-content>  
+      </md-tab>
+
+      <!-- ********************************************************************************************************************** -->
+      <!-- *** GRAFICAS DE TIEMPOS PROMEDIO ************************************************************************************* -->
+      <!-- ********************************************************************************************************************** -->
+      <md-tab label ="Otros">
+
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Tiempos Promedio</span>
+          </md-card-title-text>
+        </md-card-title>
+
+        <md-card-content>
+          <md-divider></md-divider>
+          <div layout-gt-md = "row" layout-md = "column">
+
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Tiempos por ruta</span>
+                  <span class="md-subhead">Ruta 1</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <md-card-content>
+                <span class = "md-subhead">Tiempos Promedio por ruta: </span>
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+                </canvas>
+              </md-card-content>
+
+              <md-card-actions layout="row" layout-align="end center"></md-card-actions>
+            </md-card>
+
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Tiempos por ruta</span>
+                  <span class="md-subhead">Ruta 1</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <md-card-content>
+                <span class = "md-subhead">Tiempos Promedio por ruta: </span>
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+                  <md-button type="button" ng-click = "nextTab()">Siguiente</md-button>
+                </canvas>
+              </md-card-content>
+
+              <md-card-actions layout="row" layout-align="end center"></md-card-actions>
+
+            </md-card>
+            <!-- TERMINA EL DIV DEL LAYOUT -->
+          </div>
+        </md-card-content>  
+      </md-tab>
+
+    </md-tabs>
+  </md-card>
+
+
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script> -->
+  <script src="angular.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.6.10/angular-messages.js"></script> -->
+  <script src="angular-messages.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.8/angular-material.js"></script> -->
+  <script type="text/javascript" src="angular-material.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-aria.min.js"></script> -->
+  <script src="angular-aria.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-animate.js"></script> -->
+  <script src="angular-animate.js"></script>
+  <script type="text/javascript" src="curp.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script> -->
+  <script src="Chart.js"></script>
+  <script type="text/javascript" src="angular-chart.js"></script>
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+  <script type="text/javascript" src="md-time-picker.js"></script>
+  <script type="text/javascript" src="app.js"></script>
+</body>
+</html>
