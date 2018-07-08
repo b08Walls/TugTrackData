@@ -51,8 +51,8 @@
               </md-card-title>
 
               <div layout = "column">
-                <md-datepicker md-placeholder = "Fecha inicial" ng-model="demo" md-open-on-focus></md-datepicker>
-                <md-time-picker flex ng-model = "time.twelve" message = "message"> </md-time-picker>
+                <md-datepicker md-placeholder = "Fecha inicial" ng-model="fechaInicial" md-open-on-focus ng-change="changeOfDate()"></md-datepicker>
+                <!-- <md-time-picker flex ng-model = "fechaInicial" message = "message"> </md-time-picker> -->
               </div>
             </md-card>
             
@@ -65,8 +65,8 @@
               </md-card-title>
               
               <div layout = "column">
-                <md-datepicker md-placeholder = "Fecha final" ng-model="demo" md-open-on-focus></md-datepicker>
-                <md-time-picker flex ng-model = "time.twelve" message = "message"> </md-time-picker>
+                <md-datepicker md-placeholder = "Fecha final" ng-model="fechaFinal" ng-change="changeOfDate()" md-open-on-focus></md-datepicker>
+                <!-- <md-time-picker flex ng-model = "fechaFinal" message = "message"> </md-time-picker> -->
               </div>
 
             </md-card>
@@ -76,7 +76,26 @@
           <md-divider></md-divider>
           <div layout-gt-md = "row" layout-md = "column">
             <!---------------------------------------------------------------------------------------------------------------------->
-            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex ng-repeat="x in lapCounterGraphs">
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Tiempos por ruta</span>
+                  <span class="md-subhead">{{ x.routeName }}</span>
+                </md-card-title-text>
+              </md-card-title>
+
+              <md-card-content>
+                <span class = "md-subhead">{{ x.graphTitle }}</span>
+                <canvas id="bar" class="chart chart-bar" chart-data="x.data" chart-labels="x.labels" chart-series="x.series">
+                </canvas>
+              </md-card-content>
+
+              <md-card-actions layout="row" layout-align="end center"></md-card-actions>
+            </md-card>
+            <!---------------------------------------------------------------------------------------------------------------------->
+
+            <!---------------------------------------------------------------------------------------------------------------------->
+            <!-- <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
               <md-card-title>
                 <md-card-title-text>
                   <span class="md-headline">Tiempos por ruta</span>
@@ -91,9 +110,9 @@
               </md-card-content>
 
               <md-card-actions layout="row" layout-align="end center"></md-card-actions>
-            </md-card>
+            </md-card> -->
             <!---------------------------------------------------------------------------------------------------------------------->
-            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
+            <!-- <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch flex>
 
               <md-card-title>
                 <md-card-title-text>
@@ -110,7 +129,7 @@
               </md-card-content>
 
               <md-card-actions layout="row" layout-align="end center"></md-card-actions>
-            </md-card>
+            </md-card> -->
             <!---------------------------------------------------------------------------------------------------------------------->
             <!-- TERMINA EL DIV DEL LAYOUT -->
           </div>
@@ -179,7 +198,7 @@
       <!-- ********************************************************************************************************************** -->
 
 
-      <md-tab ng-repeat = "x in records" label="{{x}}">
+      <md-tab ng-repeat = "x in routes" label="{{x}}">
 
         <!-------------------------------------------------------------------------------------------------------------------------->
         <md-card-title>
